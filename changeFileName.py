@@ -1,12 +1,28 @@
-import os
+import os, getopt, sys
 
-apk = "F:/download/yx4c.ssjtj.android.game_b8350b4b61.zip" # this is apk files' store path
-dex_path = "E:/packtool/dex2jar" # a directory  store dex files
+def main(argv):
 
-# for APK in apklist:
-portion = os.path.splitext(apk)
+    #获取命令行参数
+    try:
+        opts, args = getopt.getopt(argv, "hi:n:",["ifile=","newName="])
+    except getopt.GetoptError:
+        print("changeFileName.py -i <fileName> -n <newName>")
+        sys.exit(2)
 
-newname = portion[0] + ".apk" # 修改apk为zip的包体命名
+    for opt, arg in opts:
+        if opt == "-i":
+            fileName = arg
+            print("---需要修改的文件为：", fileName)
+        elif opt == "-n":
+            newName = arg
+            print("---需要修改为：", newName)
+        elif opt != "-i" or opt != "-n":
+            print("changeFileName.py -i <fileName> -n <newName>")
 
-if apk.endswith(".zip"):
-    os.rename(apk,newname)
+    portion = os.path.splitext(fileName)
+
+    os.rename(fileName,newName)
+    print("---执行成功，文件名已修改")
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
